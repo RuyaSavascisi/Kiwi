@@ -7,13 +7,11 @@ import org.jetbrains.annotations.Nullable;
 import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Pair;
 
-import fabricscreenlayers.ScreenLayerManager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.gui.screens.Screen;
@@ -30,10 +28,6 @@ public class ClientProxy {
 		for (var pair : itemsToAdd) {
 			ColorProviderRegistry.ITEM.register(pair.getSecond(), pair.getFirst());
 		}
-	}
-
-	public static void pushScreen(Minecraft mc, Screen screen) {
-		ScreenLayerManager.pushLayer(screen);
 	}
 
 	@Nullable
