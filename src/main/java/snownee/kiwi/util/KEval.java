@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.ToIntFunction;
 
-import com.ezylang.evalex.EvaluationException;
 import com.ezylang.evalex.Expression;
 import com.ezylang.evalex.config.ExpressionConfiguration;
 import com.ezylang.evalex.data.DataAccessorIfc;
@@ -54,7 +53,10 @@ public class KEval {
 	@FunctionParameter(name = "id")
 	private static class HasFunction extends AbstractFunction {
 		@Override
-		public EvaluationValue evaluate(Expression expression, Token functionToken, EvaluationValue... parameterValues) throws EvaluationException {
+		public EvaluationValue evaluate(
+				Expression expression,
+				Token functionToken,
+				EvaluationValue... parameterValues) {
 			String string = parameterValues[0].getStringValue();
 			if (string.startsWith("@")) {
 				return EvaluationValue.booleanValue(KiwiModules.isLoaded(new ResourceLocation(string.substring(1))));
@@ -69,9 +71,14 @@ public class KEval {
 		private final Object2IntMap<String> cache = new Object2IntAVLTreeMap<>();
 
 		@Override
-		public EvaluationValue evaluate(Expression expression, Token functionToken, EvaluationValue... parameterValues) throws EvaluationException {
+		public EvaluationValue evaluate(
+				Expression expression,
+				Token functionToken,
+				EvaluationValue... parameterValues) {
 			String string = parameterValues[0].getStringValue();
-			return EvaluationValue.numberValue(new BigDecimal(cache.computeIfAbsent(string, (ToIntFunction<String>) Platform::getVersionNumber)));
+			return EvaluationValue.numberValue(new BigDecimal(cache.computeIfAbsent(
+					string,
+					(ToIntFunction<String>) Platform::getVersionNumber)));
 		}
 	}
 
@@ -79,7 +86,7 @@ public class KEval {
 		@Override
 		public EvaluationValue getData(String variable) {
 			Object o = KiwiCommonConfig.vars.get(variable);
-			return new EvaluationValue(o, config());
+			return EvaluationValue.of(o, config());
 		}
 
 		@Override
@@ -91,7 +98,10 @@ public class KEval {
 	private static class NullishCoalescingOperator extends AbstractOperator {
 
 		@Override
-		public EvaluationValue evaluate(Expression expression, Token operatorToken, EvaluationValue... operands) throws EvaluationException {
+		public EvaluationValue evaluate(
+				Expression expression,
+				Token operatorToken,
+				EvaluationValue... operands) {
 			if (operands[0].isNullValue()) {
 				return operands[1];
 			} else {
