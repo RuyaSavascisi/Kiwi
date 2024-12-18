@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
@@ -60,11 +61,11 @@ public class KiwiLanguageProvider extends FabricLanguageProvider {
 	public void generateTranslations(FabricLanguageProvider.TranslationBuilder translationBuilder) {
 	}
 
-	public Path createPath(String path, String extension) {
-		return this.dataOutput.getForgeModContainer()
+	public Optional<Path> createPath(String path, String extension) {
+		return Optional.of(this.dataOutput.getForgeModContainer()
 				.getOwningFile()
 				.getFile()
-				.findResource("assets/%s/lang/%s.%s".formatted(dataOutput.getModId(), path, extension));
+				.findResource("assets/%s/lang/%s.%s".formatted(dataOutput.getModId(), path, extension)));
 	}
 
 	public void putExistingTranslations(FabricLanguageProvider.TranslationBuilder translationBuilder) {
@@ -73,7 +74,7 @@ public class KiwiLanguageProvider extends FabricLanguageProvider {
 
 	public void putExistingTranslations(FabricLanguageProvider.TranslationBuilder translationBuilder, String path) {
 		try {
-			Path existingFilePath = createPath(path, "json");
+			Path existingFilePath = createPath(path, "json").orElseThrow();
 			translationBuilder.add(existingFilePath);
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to add existing language file!", e);
@@ -86,7 +87,7 @@ public class KiwiLanguageProvider extends FabricLanguageProvider {
 
 	public void putExistingYamlTranslations(FabricLanguageProvider.TranslationBuilder translationBuilder, String path) {
 		try {
-			Path existingFilePath = createPath(path, "yaml");
+			Path existingFilePath = createPath(path, "yaml").orElseThrow();
 			try (Reader reader = Files.newBufferedReader(existingFilePath)) {
 				Map<String, ?> map = Util.loadYaml(reader, Map.class);
 				for (Map.Entry<String, ?> entry : map.entrySet()) {
@@ -121,9 +122,9 @@ public class KiwiLanguageProvider extends FabricLanguageProvider {
 				Objects.requireNonNull(value);
 				translationEntries.put(key, value);
 			};
-			if (Files.exists(createPath("en_us.existing", "yaml"))) {
+			if (createPath("en_us.existing", "yaml").map(Files::exists).orElse(false)) {
 				putExistingYamlTranslations(translationBuilder);
-			} else if (Files.exists(createPath("en_us.existing", "json"))) {
+			} else if (createPath("en_us.existing", "json").map(Files::exists).orElse(false)) {
 				putExistingTranslations(translationBuilder);
 			}
 		}
