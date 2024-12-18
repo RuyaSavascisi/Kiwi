@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRe
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import snownee.kiwi.KiwiClientConfig;
 import snownee.kiwi.contributor.client.CosmeticLayer;
 import snownee.kiwi.contributor.client.gui.CosmeticScreen;
 
@@ -37,10 +38,10 @@ public class ContributorsClient {
 	private static int hold;
 
 	public static void onKeyInput(Minecraft mc) {
-		if (mc.screen != null || mc.player == null || !mc.isWindowActive()) {
+		if (!KiwiClientConfig.cosmeticScreenKeybind || mc.screen != null || mc.player == null || !mc.isWindowActive()) {
 			return;
 		}
-		boolean K = InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), InputConstants.KEY_K);
+		boolean K = InputConstants.isKeyDown(mc.getWindow().getWindow(), InputConstants.KEY_K);
 		if (!K || Screen.hasAltDown() || Screen.hasControlDown() || Screen.hasShiftDown()) {
 			hold = 0;
 			return;

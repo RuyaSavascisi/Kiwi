@@ -47,6 +47,7 @@ kiwi.config.client: Client-side
 kiwi.config.server: Server-side
 kiwi.config.modules: Modules
 kiwi.config.requiresRestart: Requires restart
+kiwi.config.cosmeticScreenKeybind.desc: Opens the Kiwi Cosmetic Screen by holding K, if you have available cosmetics
 kiwi.config.globalTooltip.desc: Enables the feature to globally add item tooltips
 kiwi.config.noMicrosoftTelemetry.desc: Disables data collection added by Microsoft Mojang
 kiwi.config.debug.tagsTooltip.desc: Shows item tags in advanced tooltips (F3+H)
@@ -56,7 +57,9 @@ kiwi.config.suppressExperimentalSettingsWarning.desc: Skips the experimental set
 kiwi.config.vars: Variables
 commands.kiwi.reload.success: Configuration %s has been reloaded.
 commands.kiwi.reload.failed: Configuration %s is not found or not provided by Kiwi.
-gui.kiwi.cosmetic: Choose a cosmetic effect
+gui.kiwi.cosmetic: Kiwi Cosmetics Screen
+gui.kiwi.cosmetic.disabled: Keybind Disabled
+gui.kiwi.cosmetic.enabled: Keybind Enabled
 cosmetic.snownee.2020q3: Planets
 cosmetic.snownee.2020q4: Fox
 cosmetic.snownee.2021q1: Electronicat
