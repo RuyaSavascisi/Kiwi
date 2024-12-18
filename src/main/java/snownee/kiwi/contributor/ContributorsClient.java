@@ -13,6 +13,7 @@ import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import snownee.kiwi.KiwiClientConfig;
 import snownee.kiwi.contributor.client.CosmeticLayer;
 import snownee.kiwi.contributor.client.gui.CosmeticScreen;
 
@@ -44,7 +45,7 @@ public class ContributorsClient {
 	@SubscribeEvent
 	public static void onKeyInput(InputEvent.Key event) {
 		Minecraft mc = Minecraft.getInstance();
-		if (mc.screen != null || mc.player == null || !mc.isWindowActive()) {
+		if (!KiwiClientConfig.cosmeticScreenKeybind || mc.screen != null || mc.player == null || !mc.isWindowActive()) {
 			return;
 		}
 		if (event.getModifiers() != 0) {

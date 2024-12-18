@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
@@ -49,6 +50,15 @@ public class CosmeticScreen extends Screen {
 		if (!added) {
 			minecraft.setScreen(null);
 		}
+		addRenderableWidget(Button.builder(
+				Component.translatable(KiwiClientConfig.cosmeticScreenKeybind ? "gui.kiwi.cosmetic.enabled" : "gui.kiwi.cosmetic.disabled"),
+				b -> {
+					KiwiClientConfig.cosmeticScreenKeybind = !KiwiClientConfig.cosmeticScreenKeybind;
+					KiwiConfigManager.getHandler(KiwiClientConfig.class).save();
+					b.setMessage(Component.translatable(KiwiClientConfig.cosmeticScreenKeybind ?
+							"gui.kiwi.cosmetic.enabled" :
+							"gui.kiwi.cosmetic.disabled"));
+				}).pos(180, 30).build());
 	}
 
 	@Override
@@ -56,6 +66,7 @@ public class CosmeticScreen extends Screen {
 		renderBackground(guiGraphics);
 		super.render(guiGraphics, mouseX, mouseY, pTicks);
 		list.render(guiGraphics, mouseX, mouseY, pTicks);
+		guiGraphics.drawString(minecraft.font, title, 180, 10, 0xFFFFFF);
 	}
 
 	@Override
@@ -65,7 +76,12 @@ public class CosmeticScreen extends Screen {
 	}
 
 	@Override
-	public boolean mouseDragged(double p_mouseDragged_1_, double p_mouseDragged_3_, int p_mouseDragged_5_, double p_mouseDragged_6_, double p_mouseDragged_8_) {
+	public boolean mouseDragged(
+			double p_mouseDragged_1_,
+			double p_mouseDragged_3_,
+			int p_mouseDragged_5_,
+			double p_mouseDragged_6_,
+			double p_mouseDragged_8_) {
 		list.mouseDragged(p_mouseDragged_1_, p_mouseDragged_3_, p_mouseDragged_5_, p_mouseDragged_6_, p_mouseDragged_8_);
 		return super.mouseDragged(p_mouseDragged_1_, p_mouseDragged_3_, p_mouseDragged_5_, p_mouseDragged_6_, p_mouseDragged_8_);
 	}
@@ -135,7 +151,17 @@ public class CosmeticScreen extends Screen {
 		}
 
 		@Override
-		public void render(GuiGraphics guiGraphics, int entryIdx, int top, int left, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hover, float partialTicks) {
+		public void render(
+				GuiGraphics guiGraphics,
+				int entryIdx,
+				int top,
+				int left,
+				int entryWidth,
+				int entryHeight,
+				int mouseX,
+				int mouseY,
+				boolean hover,
+				float partialTicks) {
 			int color = hover ? 0xFFFFAA : 0xFFFFFF;
 			if (this == parent.selectedEntry) {
 				color = 0xFFFF77;
